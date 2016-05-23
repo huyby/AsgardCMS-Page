@@ -17,7 +17,6 @@ class CreatePageRequest extends BaseFormRequest
     {
         return [
             'title' => 'required',
-            'body' => 'required',
         ];
     }
 
