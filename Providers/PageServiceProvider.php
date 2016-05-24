@@ -5,6 +5,8 @@ use Illuminate\Support\ServiceProvider;
 use Modules\Page\Entities\Page;
 use Modules\Page\Repositories\Cache\CachePageDecorator;
 use Modules\Page\Repositories\Eloquent\EloquentPageRepository;
+use Modules\Page\Repositories\PageTypeRepository;
+use Modules\Page\Services\PageTypeService;
 
 class PageServiceProvider extends ServiceProvider
 {
@@ -53,6 +55,19 @@ class PageServiceProvider extends ServiceProvider
                 }
 
                 return new CachePageDecorator($repository);
+            }
+        );
+        $this->app->bind(
+            'Modules\Page\Repositories\PageTypeRepository',
+            function () {
+                $pageTypes = config('asgard.page.config.page_type_class_names', []);
+                return new PageTypeRepository($pageTypes);
+            }
+        );
+        $this->app->bind(
+            'Modules\Page\Services\PageTypeService',
+            function () {
+                return new PageTypeService($this->app->make('Modules\Page\Repositories\PageTypeRepository'));
             }
         );
     }

@@ -1,6 +1,7 @@
 <?php namespace Modules\Page\Repositories;
 
 use Modules\Core\Repositories\BaseRepository;
+use Modules\Page\Entities\PageType;
 
 interface PageRepository extends BaseRepository
 {

@@ -2,6 +2,7 @@
 
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Page\Entities\Page;
+use Modules\Page\Entities\PageType;
 use Modules\Page\Http\Requests\CreatePageRequest;
 use Modules\Page\Http\Requests\UpdatePageRequest;
 use Modules\Page\Repositories\PageRepository;
@@ -31,24 +32,29 @@ class PageController extends AdminBaseController
     /**
      * Show the form for creating a new resource.
      *
+     * @param PageType $pageType
      * @return Response
      */
-    public function create()
+    public function create(PageType $pageType)
     {
         $this->assetPipeline->requireJs('ckeditor.js');
 
-        return view('page::admin.create');
+        return view('page::admin.create', compact('pageType'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  CreatePageRequest $request
+     * @param PageType $pageType
      * @return Response
      */
-    public function store(CreatePageRequest $request)
+    public function store(CreatePageRequest $request, PageType $pageType)
     {
-        $this->page->create($request->all());
+        $data = $request->all();
+        $data['type'] = $pageType;
+
+        $this->page->create($data);
 
         flash(trans('page::messages.page created'));
 

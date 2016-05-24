@@ -8,16 +8,16 @@ class UpdatePageRequest extends BaseFormRequest
 
     public function rules()
     {
-        return [
+        return $this->mergePageTypeRules([
             'template' => 'required',
-        ];
+        ]);
     }
 
     public function translationRules()
     {
-        return [
+        return $this->mergePageTypeTranslationRules([
             'title' => 'required',
-        ];
+        ]);
     }
 
     public function authorize()
@@ -39,5 +39,31 @@ class UpdatePageRequest extends BaseFormRequest
             'title.required' => trans('page::messages.title is required'),
             'body.required' => trans('page::messages.body is required'),
         ];
+    }
+
+    /**
+     * Extended set of rules to be merged with default rules for a page type form request.
+     *
+     * @param array $rules
+     * @return array
+     */
+    public function mergePageTypeTranslationRules(array $rules = [])
+    {
+        $pageType = request()->page->type;
+
+        return $pageType ? array_merge($rules, $pageType->transValidationRules) : $rules;
+    }
+
+    /**
+     * Extended set of rules to be merged with default rules for a page type form request.
+     *
+     * @param array $rules
+     * @return array
+     */
+    protected function mergePageTypeRules(array $rules = [])
+    {
+        $pageType = request()->page->type;
+
+        return $pageType ? array_merge($rules, $pageType->validationRules) : $rules;
     }
 }

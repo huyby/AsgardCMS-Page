@@ -3,6 +3,7 @@
 use Illuminate\Contracts\View\View;
 use Illuminate\Filesystem\Filesystem;
 use Modules\Core\Foundation\Theme\ThemeManager;
+use Modules\Page\Entities\PageType;
 
 class TemplateViewComposer
 {
@@ -14,11 +15,16 @@ class TemplateViewComposer
      * @var Filesystem
      */
     private $finder;
+    /**
+     * @var PageType
+     */
+    protected $pageType;
 
     public function __construct(ThemeManager $themeManager, Filesystem $finder)
     {
         $this->themeManager = $themeManager;
         $this->finder = $finder;
+        $this->pageType = request()->page_type ?: request()->page->type;
     }
 
     public function compose(View $view)
@@ -26,6 +32,10 @@ class TemplateViewComposer
         $view->with('all_templates', $this->getTemplates());
     }
 
+    /**
+     * Get list of templates available in theme
+     * @return array
+     */
     private function getTemplates()
     {
         $path = $this->getCurrentThemeBasePath();
@@ -38,8 +48,16 @@ class TemplateViewComposer
             if ($this->isLayoutOrPartial($relativePath)) {
                 continue;
             }
-
             $templateName = $this->getTemplateName($template);
+
+            if (!$templateName) {
+                continue;
+            }
+            $templatePageType = $this->getTemplateType($template);
+
+            if ($templatePageType && $templatePageType !== (string) $this->pageType) {
+                continue;
+            }
             $file = $this->removeExtensionsFromFilename($template);
 
             if ($this->hasSubdirectory($relativePath)) {
@@ -66,33 +84,44 @@ class TemplateViewComposer
      * Read template name defined in comments.
      *
      * @param $template
-     *
-     * @return string
+     * @return null|string
      */
     private function getTemplateName($template)
     {
-        preg_match("/{{-- Template: (.*) --}}/", $template->getContents(), $templateName);
-
-        if (count($templateName) > 1) {
-            return $templateName[1];
-        }
-
-        return $this->getDefaultTemplateName($template);
+        return $this->getTemplateMeta($template, 'Page Template');
     }
 
     /**
-     * If the template name is not defined in comments, build a default.
+     * Read template page type defined in comments.
      *
      * @param $template
-     *
-     * @return mixed
+     * @return null|string
      */
-    private function getDefaultTemplateName($template)
+    private function getTemplateType($template)
     {
-        $relativePath = $template->getRelativePath();
-        $fileName = $this->removeExtensionsFromFilename($template);
+        return $this->getTemplateMeta($template, 'Page Type');
+    }
 
-        return $this->hasSubdirectory($relativePath) ? $relativePath . '/' . $fileName : $fileName;
+    /**
+     * Read template meta defined in comments.
+     *
+     * @param $template
+     * @param $metaName
+     * @return null|string
+     */
+    private function getTemplateMeta($template, $metaName)
+    {
+        preg_match(
+            sprintf('/{{--\s*%s:\s*\b(.*)\b\s*--}}/', preg_quote($metaName)),
+            $template->getContents(),
+            $matches
+        );
+
+        if (count($matches) > 1) {
+            return $matches[1];
+        }
+
+        return null;
     }
 
     /**

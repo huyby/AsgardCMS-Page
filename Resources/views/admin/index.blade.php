@@ -1,3 +1,4 @@
+@inject('pageTypeService', 'Modules\Page\Services\PageTypeService')
 @extends('layouts.master')
 
 @section('content-header')
@@ -14,10 +15,16 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="row">
-                <div class="btn-group pull-right" style="margin: 0 15px 15px 0;">
-                    <a href="{{ URL::route('admin.page.page.create') }}" class="btn btn-primary btn-flat" style="padding: 4px 10px;">
-                        <i class="fa fa-pencil"></i> {{ trans('page::pages.button.create page') }}
-                    </a>
+                <div class="btn-group pull-right" style="margin: 0 15px 15px 0">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-plus"></i> {{ trans('page::pages.button.create page') }} &nbsp;
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach ($pageTypeService->getSlugListSelectValues() as $slug => $name)
+                            <li><a href="{{ route('admin.page.page.create', ['page_type' => $slug]) }}">{{ $name }}</a></li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
             <div class="box box-primary">

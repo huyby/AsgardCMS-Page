@@ -2,6 +2,7 @@
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Page\Repositories\PageTypeRepository;
 
 class Page extends Model
 {
@@ -24,6 +25,7 @@ class Page extends Model
     protected $fillable = [
         'is_home',
         'template',
+        'type',
         // Translatable fields
         'page_id',
         'title',
@@ -40,6 +42,25 @@ class Page extends Model
     protected $casts = [
         'is_home' => 'boolean',
     ];
+
+    /**
+     * Get the page type, when value contains a string cast to PageType instance
+     *
+     * @return \Modules\Page\Entities\PageType
+     */
+    public function getTypeAttribute()
+    {
+        $type = $this->getAttributeFromArray('type');
+
+        if (is_string($type)) {
+            $type = empty($type)
+                ? app(PageTypeRepository::class)->getDefaultType()
+                : app(PageTypeRepository::class)->findByClass($type);
+            $this->setAttribute('type', $type);
+        }
+
+        return $type;
+    }
 
     public function __call($method, $parameters)
     {

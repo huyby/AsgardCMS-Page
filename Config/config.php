@@ -19,6 +19,7 @@ return [
         ],
     ],
     'show_body_field' => true,
+    'page_type_class_names' => [],
     /*
     |--------------------------------------------------------------------------
     | Dynamic relations
