@@ -2,7 +2,7 @@
 
 @section('content-header')
     <h1>
-        {{ trans('page::pages.title.create page', [$page->type->name]) }}
+        {{ trans('page::pages.title.create page', [$pageType->name]) }}
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ URL::route('dashboard.index') }}"><i class="fa fa-dashboard"></i> {{ trans('core::core.breadcrumb.home') }}</a></li>
@@ -50,7 +50,7 @@
         <div class="col-md-2">
             <div class="box box-primary">
                 <div class="box-body">
-                    <h3>{{ $page->type->name }}</h3>
+                    <h3>{{ $pageType->name }}</h3>
                     <div class="checkbox{{ $errors->has('is_home') ? ' has-error' : '' }}">
                         <input type="hidden" name="is_home" value="0">
                         <label for="is_home">
