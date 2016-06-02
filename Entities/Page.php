@@ -63,7 +63,6 @@ class Page extends Model
         'slug' => 4,
     ];
     
-    
     /**
      * Get the page type, when value contains a string cast to PageType instance
      *
