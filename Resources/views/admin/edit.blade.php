@@ -38,6 +38,11 @@
                             @include($partial)
                         <?php endforeach; ?>
                     <?php endif; ?>
+                    @if ($partialFields = $page->type->getPartialFields('normal', 'edit'))
+                        @foreach ($partialFields as $partial)
+                            @include($partial)
+                        @endforeach
+                    @endif
 
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary btn-flat" name="button" value="index" >
@@ -77,6 +82,11 @@
                         {!! Form::select("template", $all_templates, old("template", $page->template), ['class' => "form-control", 'placeholder' => trans('page::pages.form.template')]) !!}
                         {!! $errors->first("template", '<span class="help-block">:message</span>') !!}
                     </div>
+                    @if ($partialFields = $page->type->getPartialFields('side', 'edit'))
+                        @foreach ($partialFields as $partial)
+                            @include($partial)
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>

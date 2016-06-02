@@ -22,6 +22,11 @@
                 @include($partial)
             <?php endforeach; ?>
         <?php endif; ?>
+        @if ($partialFields = $pageType->getPartialFields('translatable', 'create'))
+            @foreach ($partialFields as $partial)
+                @include($partial)
+            @endforeach
+        @endif
     </div>
     <div class="box-group" id="accordion">
         <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->

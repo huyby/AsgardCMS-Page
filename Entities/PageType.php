@@ -12,6 +12,11 @@ abstract class PageType
     protected static $name;
     protected static $pluralName;
 
+    public function getPartialFields($area, $mode)
+    {
+        return config(sprintf('asgard.page.config.page_type_partials.%s.%s.%s', $this->slug, $area, $mode));
+    }
+
     /**
      * @param $name
      * @return mixed
