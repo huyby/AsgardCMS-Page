@@ -38,6 +38,11 @@
                             @include($partial)
                         <?php endforeach; ?>
                     <?php endif; ?>
+                    @if ($partialFields = $pageType->getPartialFields('normal', 'create'))
+                        @foreach ($partialFields as $partial)
+                            @include($partial)
+                        @endforeach
+                    @endif
 
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
@@ -69,6 +74,11 @@
                         {!! Form::select("template", $all_templates, old("template", 'default'), ['class' => "form-control", 'placeholder' => trans('page::pages.form.template')]) !!}
                         {!! $errors->first("template", '<span class="help-block">:message</span>') !!}
                     </div>
+                    @if ($partialFields = $pageType->getPartialFields('side', 'create'))
+                        @foreach ($partialFields as $partial)
+                            @include($partial)
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
