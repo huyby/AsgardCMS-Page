@@ -19,6 +19,6 @@ if (!function_exists('page_url')) {
         if ($locale !== null) {
             $page = $page->getTranslation($locale);
         }
-        return url($locale ?: LaravelLocalization::getCurrentLocale() . '/' . $page ? $page->slug : '');
+        return url(($locale ?: LaravelLocalization::getCurrentLocale()) . '/' . ($page ? $page->slug : ''));
     }
 }
