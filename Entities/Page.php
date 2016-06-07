@@ -55,7 +55,7 @@ class Page extends Model
         if (is_string($type)) {
             $type = empty($type)
                 ? app(PageTypeRepository::class)->getDefaultType()
-                : app(PageTypeRepository::class)->findByClass($type);
+                : new $type;
             $this->setAttribute('type', $type);
         }
 
