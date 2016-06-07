@@ -55,7 +55,7 @@ class TemplateViewComposer
             }
             $templatePageType = $this->getTemplateType($template);
 
-            if ($templatePageType && $templatePageType !== (string) $this->pageType) {
+            if (is_array($templatePageType) && !in_array((string) $this->pageType, $templatePageType)) {
                 continue;
             }
             $file = $this->removeExtensionsFromFilename($template);
@@ -95,11 +95,11 @@ class TemplateViewComposer
      * Read template page type defined in comments.
      *
      * @param $template
-     * @return null|string
+     * @return array
      */
     private function getTemplateType($template)
     {
-        return $this->getTemplateMeta($template, 'Page Type');
+        return array_map('trim', explode(',', $this->getTemplateMeta($template, 'Page Type')));
     }
 
     /**
