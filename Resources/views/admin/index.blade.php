@@ -38,6 +38,7 @@
                             <th>Id</th>
                             <th>{{ trans('page::pages.table.name') }}</th>
                             <th>{{ trans('page::pages.table.slug') }}</th>
+                            <th>{{ trans('page::pages.table.type') }}</th>
                             <th>{{ trans('core::core.table.created at') }}</th>
                             <th data-sortable="false">{{ trans('core::core.table.actions') }}</th>
                         </tr>
@@ -59,6 +60,11 @@
                             <td>
                                 <a href="{{ URL::route('admin.page.page.edit', [$page->id]) }}">
                                     {{ $page->slug }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ URL::route('admin.page.page.edit', [$page->id]) }}">
+                                    {{ $page->type->name }}
                                 </a>
                             </td>
                             <td>
