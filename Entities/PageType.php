@@ -31,8 +31,11 @@ abstract class PageType
         if (isset(static::$$name)) {
             return static::$$name;
         }
+        if (isset($this->name)) {
+            return $this->$name;
+        }
 
-        return $this->$name;
+        return null;
     }
 
     /**

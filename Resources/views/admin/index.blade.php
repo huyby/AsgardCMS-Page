@@ -21,7 +21,7 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        @foreach ($pageTypeService->getSlugListSelectValues() as $slug => $name)
+                        @foreach ($pageTypeService->getSlugListSelectValues(true) as $slug => $name)
                             <li><a href="{{ route('admin.page.page.create', ['page_type' => $slug]) }}">{{ $name }}</a></li>
                         @endforeach
                     </ul>
