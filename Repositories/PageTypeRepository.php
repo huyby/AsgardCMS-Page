@@ -62,6 +62,19 @@ class PageTypeRepository
     }
 
     /**
+     * Get list of all visible page type class name
+     *
+     * @todo should use permissions
+     * @return array
+     */
+    public function allVisible()
+    {
+        return $this->types->filter(function ($item) {
+            return $item->hide !== true;
+        });
+    }
+
+    /**
      * Find a page type by slug
      *
      * @param string $slug

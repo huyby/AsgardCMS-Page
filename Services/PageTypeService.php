@@ -37,11 +37,12 @@ class PageTypeService
         return $list;
     }
 
-    public function getSlugListSelectValues()
+    public function getSlugListSelectValues($onlyVisible = false)
     {
         $list = [];
+        $method = $onlyVisible === true ? 'allVisible' : 'all';
 
-        foreach ($this->pageTypeRepository->all() as $pageType) {
+        foreach ($this->pageTypeRepository->$method() as $pageType) {
             $list[$pageType->slug] = $pageType->name;
         }
 
