@@ -65,13 +65,8 @@
                     <hr>
                     <div class="checkbox{{ $errors->has('is_home') ? ' has-error' : '' }}">
                         <input type="hidden" name="is_home" value="0">
-                        <label for="is_home">
-                            <input id="is_home"
-                                   name="is_home"
-                                   type="checkbox"
-                                   class="flat-blue"
-                                    {{ isset($page->is_home) && (bool)$page->is_home == true ? 'checked' : '' }}
-                                   value="1" />
+                        <label for="is_home" style="padding-left: 20px">
+                            <input id="is_home" name="is_home" type="checkbox" class="flat-blue"  {{ isset($page->is_home) && (bool)$page->is_home == true ? 'checked' : '' }} value="1" />
                             {{ trans('page::pages.form.is homepage') }}
                             {!! $errors->first('is_home', '<span class="help-block">:message</span>') !!}
                         </label>
@@ -112,10 +107,6 @@
                 actions: [
                     { key: 'b', route: "<?= route('admin.page.page.index') ?>" }
                 ]
-            });
-            $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
-                checkboxClass: 'icheckbox_flat-blue',
-                radioClass: 'iradio_flat-blue'
             });
         });
     </script>
