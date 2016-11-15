@@ -90,10 +90,16 @@ class EloquentPageRepository extends EloquentBaseRepository implements PageRepos
         $homepage->save();
     }
 
+    /**
+     * Delete a page, trigger PageWasDeleted event.
+     *
+     * @param \Modules\Core\Repositories\Eloquent\Model $model
+     * @return bool
+     */
     public function destroy($model)
     {
         event(new PageWasDeleted($model->id));
-        
+
         return parent::destroy($model);
     }
 }
